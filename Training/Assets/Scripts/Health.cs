@@ -8,33 +8,29 @@ public class Health : MonoBehaviour
 
     private int _point;
 
-    public event UnityAction<int, int> ChangeHeatlh;
+    public event UnityAction<int, int> ChangedHeatlh;
 
     private void Start()
     {
         _point = _maxPoint;
-        ChangeHeatlh?.Invoke(_point, _maxPoint);
+        ChangedHeatlh?.Invoke(_point, _maxPoint);
     }
 
     public void TakeDamage(int damage)
     {
         _point -= damage;
-        ChangeHeatlh?.Invoke(_point, _maxPoint);
-
-        if (_point < 0)
-        {
-            _point = 0;
-        }
+        CauseChangeInBar();
     }
 
     public void Recuperate(int point)
     {
         _point += point;
-        ChangeHeatlh?.Invoke(_point, _maxPoint);
+        CauseChangeInBar();
+    }
 
-        if (_point > _maxPoint)
-        {
-            _point = _maxPoint;
-        }
+    private void CauseChangeInBar()
+    {
+        _point = Mathf.Clamp(_point, 0, _maxPoint);
+        ChangedHeatlh?.Invoke(_point, _maxPoint);
     }
 }

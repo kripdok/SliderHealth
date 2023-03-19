@@ -1,11 +1,14 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Slider))]
 public class Bar : MonoBehaviour
 {
     [SerializeField] private Health _health;
     [SerializeField] private float _speedValueChange;
 
+    private Coroutine _valueChange;
     private Slider _slider;
     private float _correctValue;
 
@@ -17,24 +20,33 @@ public class Bar : MonoBehaviour
 
     private void OnEnable()
     {
-        _health.ChangeHeatlh += OnValueChange;
+        _health.ChangedHeatlh += OnValueChange;
     }
 
     private void OnDisable()
     {
-        _health.ChangeHeatlh -= OnValueChange;
-    }
-
-    private void Update()
-    {
-        if (_slider.value != _correctValue)
-        {
-            _slider.value = Mathf.MoveTowards(_slider.value, _correctValue, _speedValueChange * Time.deltaTime);
-        }
+        _health.ChangedHeatlh -= OnValueChange;
     }
 
     private void OnValueChange(int value, int maxValue)
     {
+        if (_valueChange != null)
+        {
+            StopCoroutine(_valueChange);
+        }
+
         _correctValue = (float)value / maxValue;
+        _valueChange = StartCoroutine(ValueChange());
+    }
+
+    private IEnumerator ValueChange()
+    {
+        WaitForSeconds wait = new WaitForSeconds(_speedValueChange * Time.deltaTime);
+
+        while (_slider.value != _correctValue)
+        {
+            _slider.value = Mathf.MoveTowards(_slider.value, _correctValue, _speedValueChange * Time.deltaTime);
+            yield return wait;
+        }
     }
 }
