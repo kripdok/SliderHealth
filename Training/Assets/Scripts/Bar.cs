@@ -20,12 +20,12 @@ public class Bar : MonoBehaviour
 
     private void OnEnable()
     {
-        _health.ChangedHeatlh += OnValueChange;
+        _health.Changed += OnValueChange;
     }
 
     private void OnDisable()
     {
-        _health.ChangedHeatlh -= OnValueChange;
+        _health.Changed -= OnValueChange;
     }
 
     private void OnValueChange(int value, int maxValue)
