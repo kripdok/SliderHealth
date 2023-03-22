@@ -41,12 +41,10 @@ public class Bar : MonoBehaviour
 
     private IEnumerator ValueChange()
     {
-        WaitForSeconds wait = new WaitForSeconds(_speedValueChange * Time.deltaTime);
-
         while (_slider.value != _correctValue)
         {
             _slider.value = Mathf.MoveTowards(_slider.value, _correctValue, _speedValueChange * Time.deltaTime);
-            yield return wait;
+            yield return null;
         }
     }
 }

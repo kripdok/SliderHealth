@@ -4,7 +4,6 @@ using UnityEngine.Events;
 public class Health : MonoBehaviour
 {
     [SerializeField] private int _maxPoint;
-    [SerializeField] private Bar _bar;
 
     private int _point;
 
@@ -19,16 +18,16 @@ public class Health : MonoBehaviour
     public void TakeDamage(int damage)
     {
         _point -= damage;
-        ÑheckForClamping();
+        ChangePointsWithinTheClamp();
     }
 
     public void Recuperate(int point)
     {
         _point += point;
-        ÑheckForClamping();
+        ChangePointsWithinTheClamp();
     }
 
-    private void ÑheckForClamping()
+    private void ChangePointsWithinTheClamp()
     {
         _point = Mathf.Clamp(_point, 0, _maxPoint);
         Changed?.Invoke(_point, _maxPoint);
